@@ -331,7 +331,7 @@
     init()
     // 检查
     checkUser()
-    // checkPhone()
+    checkPhone()
     // 共同函数
     // 获取字符串长度
     function getLen(str) {
@@ -345,28 +345,28 @@
         elemUsername.className = 'input-err'
     }
     // 设置cancel
-    function setMsg(elemUsername, elemMsg) {
+    function cancel(elemUsername, elemMsg) {
         elemMsg.className = 'ok'
         elemMsg.innerHTML = ''
         elemUsername.style.display = 'none'
     }
     // 再次获取焦点
-    function userFocus() {
-        userName.focus()
-        msg[0].style.display = 'block'
-        msg[0].className = 'tiptext'
-        msg[0].innerHTML = '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字'
-    }
-    // function userFocus(elemName, elemMsg, elemHTML) {
-    // elemName.focus()
-    //     elemMsg.style.display = 'block'
-    //     elemMsg.className = 'tiptext'
-    //     elemMsg.innerHTML = elemHTML
+    // function userFocus() {
+    //     userName.focus()
+    //     msg[0].style.display = 'block'
+    //     msg[0].className = 'tiptext'
+    //     msg[0].innerHTML = '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字'
     // }
+    function userFocus(elemName, elemMsg, elemHTML) {
+        elemName.focus()
+        elemMsg.style.display = 'block'
+        elemMsg.className = 'tiptext'
+        elemMsg.innerHTML = elemHTML
+    }
     function init() {
         // 初始化默认用户框获取焦点
-        userFocus()
-        // userFocus(userName, msg[0], '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字')
+        // userFocus()
+        userFocus(userName, msg[0], '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字')
     }
 
     // 检查用户名
@@ -381,7 +381,7 @@
         userName.oninput = function () {
             // 当输入字符长度大于零时，显示删除键
             var valLen = userName.value.length
-            // console.log(valLen)
+
             if (valLen > 0) {
                 cancel[0].style.display = 'block'
             }
@@ -389,8 +389,8 @@
         // 点击删除键 清空输入内容
         cancel[0].onclick = function () {
             userName.value = ''
-            userFocus()
-            // userFocus(userName, msg[0], '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字')
+            // userFocus()
+            userFocus(userName, msg[0], '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字')
 
             // 防止错误之后再失去焦点时，边框变色
             userName.className = ''
@@ -415,55 +415,48 @@
                 msg[0].className = ''
                 msg[0].style.display = 'none'
             } else if (reg1.test(val)) {
-                // setMsg(userName, msg[0], '请按给定格式输入')
-                msg[0].innerHTML = '请按给定格式输入'
-                msg[0].className = 'err'
-                msg[0].style.display = 'block'
-                userName.className = 'input-err'
+                setMsg(userName, msg[0], '请按给定格式输入')
+                // msg[0].innerHTML = '请按给定格式输入'
+                // msg[0].className = 'err'
+                // msg[0].style.display = 'block'
+                // userName.className = 'input-err'
             } else if (vlen > 14) {
-                // setMsg(userName, msg[0], '用户名不能超过7个汉字或14个字符')
-                msg[0].innerHTML = '用户名不能超过7个汉字或14个字符'
-                msg[0].className = 'err'
-                msg[0].style.display = 'block'
-                userName.className = 'input-err'
+                setMsg(userName, msg[0], '用户名不能超过7个汉字或14个字符')
+                // msg[0].innerHTML = '用户名不能超过7个汉字或14个字符'
+                // msg[0].className = 'err'
+                // msg[0].style.display = 'block'
+                // userName.className = 'input-err'
             } else if (reg2.test(val) || reg3.test(val)) {
-                // setMsg(userName, msg[0], '用户名仅支持中英文、数字和下划线,且不能为纯数字')
-                msg[0].innerHTML = '用户名仅支持中英文、数字和下划线,且不能为纯数字'
-                msg[0].className = 'err'
-                msg[0].style.display = 'block'
-                userName.className = 'input-err'
+                setMsg(userName, msg[0], '用户名仅支持中英文、数字和下划线,且不能为纯数字')
+                // msg[0].innerHTML = '用户名仅支持中英文、数字和下划线,且不能为纯数字'
+                // msg[0].className = 'err'
+                // msg[0].style.display = 'block'
+                // userName.className = 'input-err'
             } else {
-                // setMsg(cancel[0], msg[0])
+                // cancel(elemUsername, elemMsg)
                 msg[0].className = 'ok'
                 msg[0].innerHTML = ''
-                cancel[0].style.display = 'none'
             }
         }
     }
     // 检查手机号
-    // function checkPhone() {
-    //     // 手机号获取光标时
-    //     elemPhone.onfocus = function () {
-    //         msg[1].style.display = 'block'
-    //         msg[1].className = 'tiptext'
-    //         msg[1].innerHTML = '请输入中国大陆手机号,其他用户不可见'
-    //     }
-    //     // 绑定输入事件
-    //     elemPhone.oninput = function () {
-    //         var valLen = elemPhone.value.length
-    //         if (valLen > 0) {
-    //             // 显示删除键
-    //             cancel[1].style.display = 'block'
-    //         }
-    //     }
+    function checkPhone() {
+        // 手机号获取光标时
+        elemPhone.onfocus = function () {
+            msg[1].style.display = 'block'
+            msg[1].className = 'tiptext'
+            msg[1].innerHTML = '请输入中国大陆手机号,其他用户不可见'
+        }
+        // 绑定输入事件
+        elemPhone.oninput = function () {
+            var valLen = elemPhone.value.length
+            if (valLen > 0) {
+                // 显示删除键
+                cancel[1].style.display = 'block'
+            }
+        }
         // 删除键
-        // cancel[1].onclick = function () {
-        //     setMsg(elemPhone, msg[1], '')
-        //     elemPhone.value = ''
-        //     elemPhone.className = ''
-        //     this.style.display = 'none'
-        // }
-    // }
+    }
 </script>
 
 </html>
