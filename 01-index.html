@@ -348,9 +348,8 @@
         isPhoneok = false,
         isPwdok = false,
         isCheckok = false,
-        isreadok = false
         // 初始化
-    init()
+        init()
         // 检查
     checkUser()
     checkPhone()
@@ -670,10 +669,9 @@
                 msg[4].style.display = 'inline'
             } else {
                 msg[4].style.display = 'none'
-                isreadok = true
 
             }
-            if (isUserok && isPhoneok && isPwdok && isCheckok && isreadok) {
+            if (isUserok && isPhoneok && isPwdok && isCheckok && isAgree.checked) {
                 alert('注册')
             }
         }
