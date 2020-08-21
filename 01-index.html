@@ -331,21 +331,32 @@
         // 获取密码验证单项
     var pwdChecklistItem = document.querySelectorAll('.pwd-checklist-item')
     var pwdChecklistArrow = document.querySelector('.pwd-checklist-arrow')
+        // 获取验证码输入框
+    var verify = elemForm.verify
         // 获取所有cansel 删除键
     var cancel = document.querySelectorAll('.cancel')
+        // 获取注册框
+    var isAgree = elemForm.isAgree
+        // 获取注册按钮
+    var subBtn = document.getElementById('subBtn')
         // 获取所有msg 所有提示信息
     var msg = document.querySelectorAll('.msg')
         // 获取验证码点击按钮
     var smsBtn = document.getElementById('smsBtn')
-
-    // 初始化
+    var isPhone = false
+    var isUserok = false,
+        isPhoneok = false,
+        isPwdok = false,
+        isCheckok = false,
+        isreadok = false
+        // 初始化
     init()
         // 检查
     checkUser()
     checkPhone()
     checkPwd()
-
     checkVerify()
+    checkAgree()
         // 共同函数
         // 获取字符串长度
     function getLen(str) {
@@ -434,7 +445,7 @@
                 setMsg(userName, msg[0], '用户名仅支持中英文、数字和下划线,且不能为纯数字')
 
             } else {
-
+                isUserok = true
                 msg[0].className = 'ok'
                 msg[0].innerHTML = ''
             }
@@ -487,6 +498,8 @@
             } else {
                 msg[1].className = 'ok'
                 msg[1].innerHTML = ''
+                isPhone = true
+                isPhoneok = true
             }
         }
     }
@@ -579,6 +592,8 @@
             } else if (isCheck0 && isCheck1 && isCheck2) {
                 pwdChecklist.style.display = 'none'
                 msg[2].className = 'ok'
+                msg[2].innerHTML = ''
+                isPwdok = true
 
             } else {
                 password.className = 'input-err'
@@ -591,9 +606,77 @@
                 // 点击检测手机号
                 if (elemPhone.value == '') {
                     setMsg(elemPhone, msg[1], '请输入手机号')
+                } else if (isPhone) {
+                    elemPhone.className = ''
+                    alert('成功发送短信')
                 }
             }
-            // 获取焦点时
+            // 绑定输入事件
+        verify.oninput = function() {
+                var valLen = verify.value.length
+                if (valLen > 0) {
+                    cancel[3].style.display = 'block'
+                }
+            }
+            // 删除键
+        cancel[3].onclick = function() {
+            verify.value = ''
+
+            userFocus(verify, msg[3], '')
+                // 防止错误之后再失去焦点时，边框变色
+            verify.className = ''
+                // 隐藏自己
+            this.style.display = 'none'
+        }
+
+        // 失去焦点时
+        verify.onblur = function() {
+            // 验证验证码格式
+            var val = verify.value
+                // 全空检测
+            var reg1 = /^\s+$/
+                // 检测是否为6位数
+            var reg2 = /^\d{6}$/
+                // 没有输入
+            if (val == '') {
+                setMsg(verify, msg[3], '请输入验证码')
+            } else if (reg1.test(val)) {
+                setMsg(verify, msg[3], '正确格式的验证码')
+            } else if (!reg2.test(val)) {
+                setMsg(verify, msg[3], '请输入6位数的验证码')
+            } else {
+                msg[3].className = 'ok'
+                msg[3].innerHTML = ''
+                isCheckok = true
+            }
+        }
+    }
+    // 注册验证
+    function checkAgree() {
+        subBtn.onclick = function() {
+            if (userName.value == '') {
+                setMsg(userName, msg[0], '请输入用户名')
+            }
+            if (elemPhone.value == '') {
+                setMsg(elemPhone, msg[1], '请输入手机号')
+            }
+            if (password.value == '') {
+                setMsg(password, msg[2], '请输入密码')
+            }
+            if (verify.value == '') {
+                setMsg(verify, msg[3], '请输入验证码')
+            }
+            if (!isAgree.checked) {
+                msg[4].style.display = 'inline'
+            } else {
+                msg[4].style.display = 'none'
+                isreadok = true
+
+            }
+            if (isUserok && isPhoneok && isPwdok && isCheckok && isreadok) {
+                alert('注册')
+            }
+        }
     }
 </script>
 
