@@ -9,7 +9,7 @@
             margin: 0;
             padding: 0;
         }
-
+        
         .top-wrap {
             width: 100%;
             height: 100px;
@@ -17,24 +17,24 @@
             background-repeat: no-repeat;
             background-position: center 0px;
         }
-
+        
         .main {
             width: 990px;
             margin: 50px auto;
         }
-
+        
         .reg {
             width: 720px;
             float: left;
         }
-
+        
         .reg div {
             position: relative;
             margin-bottom: 20px;
             zoom: 1;
             display: block;
         }
-
+        
         .reg div:after {
             content: "";
             clear: both;
@@ -42,7 +42,7 @@
             visibility: hidden;
             height: 0;
         }
-
+        
         .reg label {
             display: block;
             float: left;
@@ -55,7 +55,7 @@
             font-weight: 700;
             text-align: right;
         }
-
+        
         .reg input {
             display: block;
             position: relative;
@@ -70,11 +70,11 @@
             transition: .3s;
             float: left;
         }
-
+        
         #verify-wrap input:nth-of-type(1) {
             width: 158px;
         }
-
+        
         #verify-wrap input:nth-of-type(2) {
             width: 160px;
             height: 40px;
@@ -84,24 +84,24 @@
             text-align: center;
             cursor: pointer;
         }
-
+        
         #verify-wrap input:nth-of-type(2):focus {
             border: 1px solid #ddd;
         }
-
+        
         #verify-wrap input:nth-of-type(2):hover {
             background-color: #eee;
         }
-
+        
         #verify-wrap .cancel {
             left: 212px;
         }
-
+        
         .reg .subBtn {
             position: relative;
             left: 75px;
         }
-
+        
         .reg .subBtn input {
             display: block;
             float: left;
@@ -116,22 +116,22 @@
             cursor: pointer;
             color: #fff;
         }
-
+        
         .reg input:focus {
             border-color: #488ee7;
             outline: 0;
         }
-
+        
         .reg .input-err {
             border-color: red;
         }
-
+        
         .msg {
             display: none;
         }
-
+        
         .ok {
-            display: inline-block;
+            /* display: inline-block; */
             position: relative;
             float: left;
             top: 14px;
@@ -140,7 +140,7 @@
             padding-left: 20px;
             background: url(images/reg_icons.png) -80px 0 no-repeat;
         }
-
+        
         .err {
             float: left;
             position: relative;
@@ -152,7 +152,7 @@
             font-size: 12px;
             color: #fc4343;
         }
-
+        
         .cancel {
             position: absolute;
             top: 12px;
@@ -162,24 +162,24 @@
             background: url(images/reg_icons.png) -32px -24px no-repeat;
             cursor: pointer;
         }
-
+        
         .cancel:hover {
             background-position: -48px -24px;
         }
-
+        
         .tiptext {
             height: 40px;
             line-height: 40px;
             font-size: 12px;
             color: #aaa;
         }
-
+        
         #username-wrap .tiptext {
             float: left;
             width: 250px;
             line-height: 18px;
         }
-
+        
         #pwd-checklist {
             position: absolute;
             top: 0;
@@ -192,27 +192,27 @@
             background: #f9f9f9;
             font-size: 12px;
         }
-
+        
         .pwd-checklist li {
             list-style: none;
         }
-
+        
         .pwd-checklist .pwd-checklist-item-success {
             background-position: -86px -128px;
         }
-
+        
         .pwd-checklist .pwd-checklist-item-error {
             color: rgb(252, 67, 67);
             background-position: -86px -144px;
         }
-
+        
         .pwd-checklist-item {
             line-height: 20px;
             padding-left: 18px;
             background: url(images/reg_icons.png) no-repeat -86px -112px;
             color: #666;
         }
-
+        
         .pwd-checklist-arrow {
             position: absolute;
             top: 12px;
@@ -224,15 +224,15 @@
             border-left: 1px solid #ddd;
             transform: rotateZ(45deg);
         }
-
+        
         #agree-wrap {
             font-size: 12px;
         }
-
+        
         #agree-wrap a {
             text-decoration: none;
         }
-
+        
         #agree-wrap label {
             width: 60px;
             height: 40px;
@@ -242,18 +242,18 @@
             color: #666;
             font-weight: normal;
         }
-
+        
         #agree-wrap input {
             width: 20px;
             margin: 1px 0px 0px 70px;
         }
-
+        
         #agree-wrap .msg {
             float: none;
             top: 0;
             color: #fc4343;
         }
-
+        
         .left-wrap {
             float: right;
             width: 270px;
@@ -319,21 +319,35 @@
 <script>
     // 获取表单
     var elemForm = document.forms[0]
-    // 获取用户名元素
+        // 获取用户名元素
     var userName = elemForm.username
-    // 获取手机号
+        // 获取手机号
     var elemPhone = elemForm.phone
-    // 获取所有cansel 删除键
+
+    // 获取密码输入框
+    var password = elemForm.password
+        // 获取密码验证框
+    var pwdChecklist = document.querySelector('.pwd-checklist')
+        // 获取密码验证单项
+    var pwdChecklistItem = document.querySelectorAll('.pwd-checklist-item')
+    var pwdChecklistArrow = document.querySelector('.pwd-checklist-arrow')
+        // 获取所有cansel 删除键
     var cancel = document.querySelectorAll('.cancel')
-    // 获取所有msg 所有提示信息
+        // 获取所有msg 所有提示信息
     var msg = document.querySelectorAll('.msg')
+        // 获取验证码点击按钮
+    var smsBtn = document.getElementById('smsBtn')
+
     // 初始化
     init()
-    // 检查
+        // 检查
     checkUser()
     checkPhone()
-    // 共同函数
-    // 获取字符串长度
+    checkPwd()
+
+    checkVerify()
+        // 共同函数
+        // 获取字符串长度
     function getLen(str) {
         return str.replace(/[\u4e00-\u9fa5]/g, '**').length
     }
@@ -351,18 +365,13 @@
         elemUsername.style.display = 'none'
     }
     // 再次获取焦点
-    // function userFocus() {
-    //     userName.focus()
-    //     msg[0].style.display = 'block'
-    //     msg[0].className = 'tiptext'
-    //     msg[0].innerHTML = '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字'
-    // }
     function userFocus(elemName, elemMsg, elemHTML) {
         elemName.focus()
         elemMsg.style.display = 'block'
         elemMsg.className = 'tiptext'
         elemMsg.innerHTML = elemHTML
     }
+
     function init() {
         // 初始化默认用户框获取焦点
         // userFocus()
@@ -372,68 +381,60 @@
     // 检查用户名
     function checkUser() {
         // 获取焦点时
-        userName.onfocus = function () {
-            msg[0].style.display = 'block'
-            msg[0].className = 'tiptext'
-            msg[0].innerHTML = '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字'
-        }
-        // 给用户名绑定输入事件
-        userName.oninput = function () {
-            // 当输入字符长度大于零时，显示删除键
-            var valLen = userName.value.length
-
-            if (valLen > 0) {
-                cancel[0].style.display = 'block'
+        userName.onfocus = function() {
+                msg[0].style.display = 'block'
+                msg[0].className = 'tiptext'
+                msg[0].innerHTML = '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字'
             }
-        }
-        // 点击删除键 清空输入内容
-        cancel[0].onclick = function () {
-            userName.value = ''
-            // userFocus()
-            userFocus(userName, msg[0], '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字')
+            // 给用户名绑定输入事件
+        userName.oninput = function() {
+                // 当输入字符长度大于零时，显示删除键
+                var valLen = userName.value.length
 
-            // 防止错误之后再失去焦点时，边框变色
-            userName.className = ''
-            // 隐藏自己
-            this.style.display = 'none'
-        }
-        // 当失去光标时, 检查格式
-        userName.onblur = function () {
+                if (valLen > 0) {
+                    cancel[0].style.display = 'block'
+                }
+            }
+            // 点击删除键 清空输入内容
+        cancel[0].onclick = function() {
+                userName.value = ''
+                    // userFocus()
+                userFocus(userName, msg[0], '设置后不可更改<br>中英文均可, 最长14个英文或7个汉字')
+
+                // 防止错误之后再失去焦点时，边框变色
+                userName.className = ''
+                    // 隐藏自己
+                this.style.display = 'none'
+            }
+            // 当失去光标时, 检查格式
+        userName.onblur = function() {
 
             // 没输入检测
             var val = userName.value
-            // 全空检测
+                // 全空检测
             var reg1 = /^\s+$/
-            // 用户名不能超过7个汉字或14个字符
-            // 获取字符串长度
+                // 用户名不能超过7个汉字或14个字符
+                // 获取字符串长度
             var vlen = getLen(val)
-            // 用户名仅支持中英文、数字和下划线,且不能为纯数字
+                // 用户名仅支持中英文、数字和下划线,且不能为纯数字
             var reg2 = /[^\u4e00-\u9fa5|a-zA-z|\d|_]/
             var reg3 = /^\d+$/
             if (val == '') {
                 msg[0].innerHTML = ''
                 msg[0].className = ''
                 msg[0].style.display = 'none'
+                this.className = ''
             } else if (reg1.test(val)) {
                 setMsg(userName, msg[0], '请按给定格式输入')
-                // msg[0].innerHTML = '请按给定格式输入'
-                // msg[0].className = 'err'
-                // msg[0].style.display = 'block'
-                // userName.className = 'input-err'
+
             } else if (vlen > 14) {
                 setMsg(userName, msg[0], '用户名不能超过7个汉字或14个字符')
-                // msg[0].innerHTML = '用户名不能超过7个汉字或14个字符'
-                // msg[0].className = 'err'
-                // msg[0].style.display = 'block'
-                // userName.className = 'input-err'
+
             } else if (reg2.test(val) || reg3.test(val)) {
                 setMsg(userName, msg[0], '用户名仅支持中英文、数字和下划线,且不能为纯数字')
-                // msg[0].innerHTML = '用户名仅支持中英文、数字和下划线,且不能为纯数字'
-                // msg[0].className = 'err'
-                // msg[0].style.display = 'block'
-                // userName.className = 'input-err'
+
             } else {
-                // cancel(elemUsername, elemMsg)
+
                 msg[0].className = 'ok'
                 msg[0].innerHTML = ''
             }
@@ -442,20 +443,157 @@
     // 检查手机号
     function checkPhone() {
         // 手机号获取光标时
-        elemPhone.onfocus = function () {
-            msg[1].style.display = 'block'
-            msg[1].className = 'tiptext'
-            msg[1].innerHTML = '请输入中国大陆手机号,其他用户不可见'
-        }
-        // 绑定输入事件
-        elemPhone.oninput = function () {
-            var valLen = elemPhone.value.length
-            if (valLen > 0) {
-                // 显示删除键
-                cancel[1].style.display = 'block'
+        elemPhone.onfocus = function() {
+                msg[1].style.display = 'block'
+                msg[1].className = 'tiptext'
+                msg[1].innerHTML = '请输入中国大陆手机号,其他用户不可见'
+            }
+            // 绑定输入事件
+        elemPhone.oninput = function() {
+                var valLen = elemPhone.value.length
+                if (valLen > 0) {
+                    // 显示删除键
+                    cancel[1].style.display = 'block'
+                }
+            }
+            // 删除键
+        cancel[1].onclick = function() {
+                elemPhone.value = ''
+                    // userFocus()
+                userFocus(elemPhone, msg[1], '请输入中国大陆手机号,其他用户不可见')
+
+                // 防止错误之后再失去焦点时，边框变色
+                elemPhone.className = ''
+                    // 隐藏自己
+                this.style.display = 'none'
+            }
+            // 失去光标时，检查格式
+        elemPhone.onblur = function() {
+            // 没输入检测
+            var val = elemPhone.value
+                // 全空检测
+            var reg1 = /^\s+$/
+                // 手机号格式检测
+            var reg2 = /^1[35789]{1}\d{9}$/
+            if (val == '') {
+                msg[1].innerHTML = ''
+                msg[1].className = ''
+                msg[1].style.display = 'none'
+                this.className = ''
+            } else if (reg1.test(val)) {
+                setMsg(elemPhone, msg[1], '请输入正确格式手机号')
+            } else if (!reg2.test(val)) {
+                setMsg(elemPhone, msg[1], '请输入正确格式手机号')
+            } else {
+                msg[1].className = 'ok'
+                msg[1].innerHTML = ''
             }
         }
-        // 删除键
+    }
+    // 检查密码
+    function checkPwd() {
+        var isCheck0 = false,
+            isCheck1 = false,
+            isCheck2 = false
+            // 获取焦点时
+        password.onfocus = function() {
+                // 显示验证框
+                pwdChecklist.style.display = 'block'
+                msg[2].className = ''
+
+            }
+            // 删除事件
+        cancel[2].onclick = function() {
+                // 清空输入框
+                password.value = ''
+                    // 隐藏自己
+                this.style.display = 'none'
+                    // 焦点重新定位
+                password.focus()
+                    // 重新显示验证狂
+                pwdChecklist.style.display = 'block'
+                    // 验证框内容
+                pwdChecklistItem[0].className = 'pwd-checklist-item'
+                pwdChecklistItem[1].className = 'pwd-checklist-item'
+                pwdChecklistItem[2].className = 'pwd-checklist-item'
+            }
+            // 绑定输入事件
+        password.oninput = function() {
+                // 实时验证
+                var pwdSucess = 'pwd-checklist-item pwd-checklist-item-success'
+                var pwdErr = 'pwd-checklist-item pwd-checklist-item-error'
+
+                var valLen = password.value.length
+                if (valLen > 0) {
+                    // 显示删除键
+                    cancel[2].style.display = 'block'
+                }
+                // 输入时验证
+                // 长度为8~14个字符
+                // 获取长度
+                var val = password.value
+                var vLen = getLen(val)
+                if (vLen < 8 || vLen > 14) {
+                    pwdChecklistItem[0].className = pwdErr
+                    isCheck0 = false
+                } else {
+                    pwdChecklistItem[0].className = pwdSucess
+                    isCheck0 = true
+                }
+                // 支持数字,大小写字母和标点符号
+                var reg2 = /[^\w+$]/
+                    // 不允许有空格
+                var reg3 = /\s/g
+                if (reg2.test(val)) {
+                    pwdChecklistItem[1].className = pwdErr
+                    isCheck1 = false
+                } else {
+                    pwdChecklistItem[1].className = pwdSucess
+                    isCheck1 = true
+
+                }
+                if (reg3.test(val)) {
+                    pwdChecklistItem[2].className = pwdErr
+                    isCheck2 = false
+                } else {
+                    pwdChecklistItem[2].className = pwdSucess
+                    isCheck2 = true
+                }
+                if (val == '') {
+                    password.className = ''
+                    pwdChecklistItem[0].className = 'pwd-checklist-item'
+                    pwdChecklistItem[1].className = 'pwd-checklist-item'
+                    pwdChecklistItem[2].className = 'pwd-checklist-item'
+                }
+
+            }
+            // 光标离开时检测
+        password.onblur = function() {
+            var val = password.value
+            if (val == '') {
+                password.className = ''
+                pwdChecklist.style.display = 'none'
+                pwdChecklistItem[0].className = 'pwd-checklist-item'
+                pwdChecklistItem[1].className = 'pwd-checklist-item'
+                pwdChecklistItem[2].className = 'pwd-checklist-item'
+            } else if (isCheck0 && isCheck1 && isCheck2) {
+                pwdChecklist.style.display = 'none'
+                msg[2].className = 'ok'
+
+            } else {
+                password.className = 'input-err'
+            }
+        }
+    }
+    // 验证码检查
+    function checkVerify() {
+        smsBtn.onclick = function() {
+                // 点击检测手机号
+                if (elemPhone.value == '') {
+                    setMsg(elemPhone, msg[1], '请输入手机号')
+                }
+            }
+            // 获取焦点时
     }
 </script>
 
